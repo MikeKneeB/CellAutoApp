@@ -2,38 +2,58 @@ package com.cellularautomata.cellautoapp;
 
 import android.graphics.Canvas;
 
+import java.util.concurrent.locks.Lock;
+
 /**
  * Created by mike on 10/03/17.
  */
 
 class AnimateThread extends Thread {
 
-    private CellSurfaceView drawingSurfaceView;
+    private CellSurfaceView cellSurfaceView;
+    private EvolveThread evolveThread;
     private boolean running = false;
+    private int gameSpeed;
 
-    public AnimateThread(CellSurfaceView view) {
-        drawingSurfaceView = view;
+    public AnimateThread(CellSurfaceView view, EvolveThread thread, int gameSpeed) {
+        cellSurfaceView = view;
+        evolveThread = thread;
+        this.gameSpeed = gameSpeed;
     }
 
     public void setRunning(Boolean run) {
         running = run;
     }
 
+    public void drawOnce() {
+        Canvas canvas = cellSurfaceView.getHolder().lockCanvas();
+
+        if (canvas != null) {
+            synchronized (cellSurfaceView.getHolder()) {
+                cellSurfaceView.drawCellGrid(canvas);
+            }
+
+            cellSurfaceView.getHolder().unlockCanvasAndPost(canvas);
+        }
+    }
+
     @Override
     public void run() {
         while(running) {
-            Canvas canvas = drawingSurfaceView.getHolder().lockCanvas();
+            Canvas canvas = cellSurfaceView.getHolder().lockCanvas();
 
             if (canvas != null) {
-                synchronized (drawingSurfaceView.getHolder()) {
-                    drawingSurfaceView.drawCellGrid(canvas);
+                synchronized (cellSurfaceView.getHolder()) {
+                    cellSurfaceView.drawCellGrid(canvas);
                 }
 
-                drawingSurfaceView.getHolder().unlockCanvasAndPost(canvas);
+                cellSurfaceView.getHolder().unlockCanvasAndPost(canvas);
             }
 
+            evolveThread.postToo();
+
             try {
-                sleep(50);
+                sleep(gameSpeed);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

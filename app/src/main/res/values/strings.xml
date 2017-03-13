@@ -2,4 +2,38 @@
     <string name="app_name">CellAutoApp</string>
     <string name="main_title">Cellular Automata</string>
     <string name="start_button">Continue</string>
+    <string name="random_button">Random</string>
+    <string name="clear_button">Clear</string>
+    <string name="rules_button">Rules</string>
+    <string name="rules_dialog_title">Game Rules</string>
+    <string name="rules_dialog_ok">Accept</string>
+    <string name="rules_dialog_no">Cancel</string>
+    <string name="rules_dialog_survive">Enter Survive Neighbours</string>
+    <string name="rules_dialog_create">Enter Create Neighbours</string>
+    <string name="settings_title">Settings</string>
+
+    <string-array name="life_rule_sets">
+        <item>None</item>
+        <item>Conway\'s Life</item>
+        <item>2x2 Life</item>
+        <item>Gnarl</item>
+        <item>Serviettes</item>
+        <item>34 Life</item>
+        <item>HighLife</item>
+        <item>Maze</item>
+        <item>PsuedoLife</item>
+        <item>Cities</item>
+        <item>Mazectric</item>
+        <item>Carpet</item>
+    </string-array>
+
+    <string-array name="game_types">
+        <item>Life</item>
+    </string-array>
+
+    <string name="accept_button">Accept</string>
+    <string name="game_type_option">Game Type:</string>
+    <string name="cell_size_option">Cell Size:</string>
+    <string name="game_speed_option">Game Speed:</string>
+
 </resources>
