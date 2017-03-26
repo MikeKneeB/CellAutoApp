@@ -27,13 +27,30 @@
         <item>Carpet</item>
     </string-array>
 
+    <string-array name="gene_rule_sets">
+        <item>None</item>
+        <item>Brian\'s Brain</item>
+        <item>Cooties</item>
+        <item>Star Wars</item>
+        <item>Flaming Starbows</item>
+        <item>Lines</item>
+        <item>RainZha</item>
+        <item>Rake</item>
+        <item>Snake</item>
+        <item>Spirals</item>
+        <item>Sticks</item>
+        <item>Trippy</item>
+    </string-array>
+
     <string-array name="game_types">
         <item>Life</item>
+        <item>Generations</item>
     </string-array>
 
     <string name="accept_button">Accept</string>
     <string name="game_type_option">Game Type:</string>
     <string name="cell_size_option">Cell Size:</string>
     <string name="game_speed_option">Game Speed:</string>
+    <string name="rules_dialog_generations">Enter number of generations:</string>
 
 </resources>

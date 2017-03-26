@@ -43,6 +43,9 @@ public class CellGrid {
     }
 
     public void placeValue(int x, int y, int value) {
+        if (x >= xSize || y >= ySize) {
+            return;
+        }
         if (value == -1) {
             grid[y][x] = (1 + grid[y][x]) % 2;
             tempGrid[y][x] = (1 + tempGrid[y][x]) % 2;

@@ -2,6 +2,7 @@ package com.cellularautomata.cellautoapp;
 
 import android.graphics.Canvas;
 
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 
 /**
@@ -15,14 +16,22 @@ class AnimateThread extends Thread {
     private boolean running = false;
     private int gameSpeed;
 
+    private final Semaphore goFlag = new Semaphore(1, true);
+
     public AnimateThread(CellSurfaceView view, EvolveThread thread, int gameSpeed) {
         cellSurfaceView = view;
         evolveThread = thread;
         this.gameSpeed = gameSpeed;
     }
 
+    public void setEvolveThread(EvolveThread evolveThread) { this.evolveThread = evolveThread; }
+
     public void setRunning(Boolean run) {
         running = run;
+    }
+
+    public void postTo() {
+        goFlag.release();
     }
 
     public void drawOnce() {

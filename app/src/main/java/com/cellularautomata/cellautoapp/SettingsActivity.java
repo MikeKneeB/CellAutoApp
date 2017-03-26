@@ -20,8 +20,8 @@ public class SettingsActivity extends Activity {
         Intent intent = getIntent();
 
         ((Spinner) findViewById(R.id.spinner2)).setSelection(intent.getIntExtra("gameId", 0));
-        ((EditText) findViewById(R.id.editText3)).setText(new Integer(intent.getIntExtra("cellSize", 10)).toString());
-        ((EditText) findViewById(R.id.editText4)).setText(new Integer(intent.getIntExtra("gameSpeed", 100)).toString());
+        ((EditText) findViewById(R.id.editText3)).setText(Integer.valueOf(intent.getIntExtra("cellSize", 10)).toString());
+        ((EditText) findViewById(R.id.editText4)).setText(Integer.valueOf(intent.getIntExtra("gameSpeed", 100)).toString());
     }
 
     public void acceptSetting(View view) {

@@ -11,8 +11,8 @@ import java.util.Iterator;
 
 public class LifeGrid extends CellGrid {
 
-    private HashSet<Integer> surviveList;
-    private HashSet<Integer> createList;
+    protected HashSet<Integer> surviveList;
+    protected HashSet<Integer> createList;
 
     public LifeGrid(int xSize, int ySize, HashSet<Integer> surviveList, HashSet<Integer> createList) {
         super(ySize, xSize);

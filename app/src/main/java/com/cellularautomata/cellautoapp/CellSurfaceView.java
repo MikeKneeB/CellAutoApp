@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.cellularautomata.cellautoapp.internal.GenerationsGrid;
 import com.cellularautomata.cellautoapp.internal.LifeGrid;
 
 import java.util.HashSet;
@@ -23,7 +24,7 @@ public class CellSurfaceView extends SurfaceView {
     private Paint drawPaint;
     private AnimateThread animateThread;
     private EvolveThread evolveThread;
-    private LifeGrid lifeGrid;
+    private LifeGrid cellGrid;
 
 //    private int cellSize;
 
@@ -52,15 +53,16 @@ public class CellSurfaceView extends SurfaceView {
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
 
-        evolveThread = new EvolveThread(this);
+        evolveThread = new EvolveThread(this, null);
         animateThread = new AnimateThread(this, evolveThread, CellGridActivity.gameSpeed);
+        evolveThread.setAnimateThread(animateThread);
 
         surfaceHolder = getHolder();
         surfaceHolder.addCallback(new CellSurfaceCallback());
     }
 
     public void drawCellGrid(Canvas canvas) {
-        if (this.lifeGrid == null) {
+        if (this.cellGrid == null) {
             int width = canvas.getWidth();
             int height = canvas.getHeight();
 
@@ -71,33 +73,97 @@ public class CellSurfaceView extends SurfaceView {
             HashSet<Integer> createList = new HashSet<Integer>();
             createList.add(3);
 
+            System.out.println(CellGridActivity.gameId);
+
             if (CellGridActivity.gameId == 0) {
-                this.lifeGrid = new LifeGrid(width / CellGridActivity.cellSize, height / CellGridActivity.cellSize, surviveList, createList);
+                this.cellGrid = new LifeGrid(width / CellGridActivity.cellSize, height / CellGridActivity.cellSize, surviveList, createList);
+            } else if (CellGridActivity.gameId == 1) {
+                this.cellGrid = new GenerationsGrid(width / CellGridActivity.cellSize, height / CellGridActivity.cellSize, surviveList, createList, 4);
             }
 
-            this.lifeGrid.randomGrid(0.3);
+            this.cellGrid.randomGrid(0.3);
         }
         canvas.drawColor(Color.BLACK);
-        for (int i = 0; i != this.lifeGrid.getySize(); i++) {
-            for (int j = 0; j != this.lifeGrid.getxSize(); j++) {
-                if (this.lifeGrid.valAt(j, i) == 1) {
+        for (int i = 0; i != this.cellGrid.getySize(); i++) {
+            for (int j = 0; j != this.cellGrid.getxSize(); j++) {
+                if (this.cellGrid.valAt(j, i) == 1) {
                     canvas.drawRect(j*CellGridActivity.cellSize, i*CellGridActivity.cellSize, (j+1)*CellGridActivity.cellSize, (i+1)*CellGridActivity.cellSize, drawPaint);
+                } else if (this.cellGrid.valAt(j, i) == 2) {
+                    int colour = Color.argb(255, 255, 0, 0);
+                    drawPaint.setColor(colour);
+                    canvas.drawRect(j*CellGridActivity.cellSize, i*CellGridActivity.cellSize, (j+1)*CellGridActivity.cellSize, (i+1)*CellGridActivity.cellSize, drawPaint);
+                    drawPaint.setColor(Color.WHITE);
+                } else if (this.cellGrid.valAt(j, i) == 3) {
+                    int colour = Color.argb(255, 255, 128, 0);
+                    drawPaint.setColor(colour);
+                    canvas.drawRect(j*CellGridActivity.cellSize, i*CellGridActivity.cellSize, (j+1)*CellGridActivity.cellSize, (i+1)*CellGridActivity.cellSize, drawPaint);
+                    drawPaint.setColor(Color.WHITE);
+                } else if (this.cellGrid.valAt(j, i) == 4) {
+                    int colour = Color.argb(255, 255, 255, 0);
+                    drawPaint.setColor(colour);
+                    canvas.drawRect(j*CellGridActivity.cellSize, i*CellGridActivity.cellSize, (j+1)*CellGridActivity.cellSize, (i+1)*CellGridActivity.cellSize, drawPaint);
+                    drawPaint.setColor(Color.WHITE);
+                } else if (this.cellGrid.valAt(j, i) == 5) {
+                    int colour = Color.argb(255, 128, 255, 0);
+                    drawPaint.setColor(colour);
+                    canvas.drawRect(j*CellGridActivity.cellSize, i*CellGridActivity.cellSize, (j+1)*CellGridActivity.cellSize, (i+1)*CellGridActivity.cellSize, drawPaint);
+                    drawPaint.setColor(Color.WHITE);
+                } else if (this.cellGrid.valAt(j, i) == 6) {
+                    int colour = Color.argb(255, 0, 255, 0);
+                    drawPaint.setColor(colour);
+                    canvas.drawRect(j*CellGridActivity.cellSize, i*CellGridActivity.cellSize, (j+1)*CellGridActivity.cellSize, (i+1)*CellGridActivity.cellSize, drawPaint);
+                    drawPaint.setColor(Color.WHITE);
+                } else if (this.cellGrid.valAt(j, i) == 7) {
+                    int colour = Color.argb(255, 0, 255, 128);
+                    drawPaint.setColor(colour);
+                    canvas.drawRect(j*CellGridActivity.cellSize, i*CellGridActivity.cellSize, (j+1)*CellGridActivity.cellSize, (i+1)*CellGridActivity.cellSize, drawPaint);
+                    drawPaint.setColor(Color.WHITE);
+                } else if (this.cellGrid.valAt(j, i) == 8) {
+                    int colour = Color.argb(255, 0, 255, 255);
+                    drawPaint.setColor(colour);
+                    canvas.drawRect(j*CellGridActivity.cellSize, i*CellGridActivity.cellSize, (j+1)*CellGridActivity.cellSize, (i+1)*CellGridActivity.cellSize, drawPaint);
+                    drawPaint.setColor(Color.WHITE);
+                } else if (this.cellGrid.valAt(j, i) == 9) {
+                    int colour = Color.argb(255, 0, 128, 255);
+                    drawPaint.setColor(colour);
+                    canvas.drawRect(j*CellGridActivity.cellSize, i*CellGridActivity.cellSize, (j+1)*CellGridActivity.cellSize, (i+1)*CellGridActivity.cellSize, drawPaint);
+                    drawPaint.setColor(Color.WHITE);
+                } else if (this.cellGrid.valAt(j, i) == 10) {
+                    int colour = Color.argb(255, 0, 0, 255);
+                    drawPaint.setColor(colour);
+                    canvas.drawRect(j*CellGridActivity.cellSize, i*CellGridActivity.cellSize, (j+1)*CellGridActivity.cellSize, (i+1)*CellGridActivity.cellSize, drawPaint);
+                    drawPaint.setColor(Color.WHITE);
+                } else if (this.cellGrid.valAt(j, i) == 11) {
+                    int colour = Color.argb(255, 128, 0, 255);
+                    drawPaint.setColor(colour);
+                    canvas.drawRect(j*CellGridActivity.cellSize, i*CellGridActivity.cellSize, (j+1)*CellGridActivity.cellSize, (i+1)*CellGridActivity.cellSize, drawPaint);
+                    drawPaint.setColor(Color.WHITE);
+                } else if (this.cellGrid.valAt(j, i) == 12) {
+                    int colour = Color.argb(255, 255, 0, 255);
+                    drawPaint.setColor(colour);
+                    canvas.drawRect(j*CellGridActivity.cellSize, i*CellGridActivity.cellSize, (j+1)*CellGridActivity.cellSize, (i+1)*CellGridActivity.cellSize, drawPaint);
+                    drawPaint.setColor(Color.WHITE);
+                } else if (this.cellGrid.valAt(j, i) == 13) {
+                    int colour = Color.argb(255, 255, 0, 128);
+                    drawPaint.setColor(colour);
+                    canvas.drawRect(j*CellGridActivity.cellSize, i*CellGridActivity.cellSize, (j+1)*CellGridActivity.cellSize, (i+1)*CellGridActivity.cellSize, drawPaint);
+                    drawPaint.setColor(Color.WHITE);
                 }
             }
         }
     }
 
     public void evolveGrid() {
-        this.lifeGrid.evolve();
+        this.cellGrid.evolve();
     }
 
     public void randomGrid() {
-        lifeGrid.randomGrid(0.3);
+        cellGrid.randomGrid(0.3);
         animateThread.drawOnce();
     }
 
     public void clearGrid() {
-        lifeGrid.clearGrid();
+        cellGrid.clearGrid();
         animateThread.drawOnce();
     }
 
@@ -144,8 +210,9 @@ public class CellSurfaceView extends SurfaceView {
                             menusCallback.menuState(false);
                         }
 
-                        evolveThread = new EvolveThread(this);
+                        evolveThread = new EvolveThread(this, null);
                         animateThread = new AnimateThread(this, evolveThread, CellGridActivity.gameSpeed);
+                        evolveThread.setAnimateThread(animateThread);
 
                         evolveThread.setRunning(true);
                         animateThread.setRunning(true);
@@ -164,7 +231,7 @@ public class CellSurfaceView extends SurfaceView {
                     if (mTouchOccurred) {
                         mTouchOccurred = false;
                     } else {
-                        lifeGrid.placeValue((int) x / CellGridActivity.cellSize, (int) y / CellGridActivity.cellSize, -1);
+                        cellGrid.placeValue((int) x / CellGridActivity.cellSize, (int) y / CellGridActivity.cellSize, -1);
                         animateThread.drawOnce();
                     }
                     return true;
@@ -173,7 +240,7 @@ public class CellSurfaceView extends SurfaceView {
                     int dY = ((int) y / CellGridActivity.cellSize) - ((int) mPrevY / CellGridActivity.cellSize);
 
                     if (dX != 0 || dY != 0) {
-                        lifeGrid.placeValue((int) x / CellGridActivity.cellSize, (int) y / CellGridActivity.cellSize, 1);
+                        cellGrid.placeValue((int) x / CellGridActivity.cellSize, (int) y / CellGridActivity.cellSize, 1);
                         animateThread.drawOnce();
                     }
             }
@@ -185,18 +252,27 @@ public class CellSurfaceView extends SurfaceView {
     }
 
     public void editGridValues(HashSet<Integer> surviveList, HashSet<Integer> createList) {
-        lifeGrid.setCreateList(createList);
-        lifeGrid.setSurviveList(surviveList);
+        cellGrid.setCreateList(createList);
+        cellGrid.setSurviveList(surviveList);
+    }
+
+    public void editGridValues(HashSet<Integer> surviveList, HashSet<Integer> createList, int generations) {
+        cellGrid.setCreateList(createList);
+        cellGrid.setSurviveList(surviveList);
+
+        ((GenerationsGrid) cellGrid).setGenerations(generations);
     }
 
     private class CellSurfaceCallback implements SurfaceHolder.Callback {
 
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
-            animateThread.setRunning(true);
-            evolveThread.setRunning(true);
-            animateThread.start();
-            evolveThread.start();
+            if (running) {
+                animateThread.setRunning(true);
+                evolveThread.setRunning(true);
+                animateThread.start();
+                evolveThread.start();
+            }
         }
 
         @Override
@@ -206,6 +282,7 @@ public class CellSurfaceView extends SurfaceView {
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
+
             boolean retry = true;
 
             animateThread.setRunning(false);

@@ -42,7 +42,8 @@ public class GridOptionDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        int gridID = getArguments().getInt("gridID");
+
+        final int gridID = getArguments().getInt("gridID");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -50,7 +51,13 @@ public class GridOptionDialogFragment extends DialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        final View view = inflater.inflate(R.layout.dialog_cell_options, null);
+        final View view;
+
+        if (gridID == 0) {
+            view  = inflater.inflate(R.layout.dialog_cell_options, null);
+        } else {
+             view = inflater.inflate(R.layout.dialog_cell_options_gene, null);
+        }
 
         builder.setView(view);
 
@@ -60,80 +67,180 @@ public class GridOptionDialogFragment extends DialogFragment {
                         HashSet<Integer> surviveList = new HashSet<Integer>();
                         HashSet<Integer> createList = new HashSet<Integer>();
 
-                        long spinnerVal = ((Spinner) view.findViewById(R.id.spinner)).getSelectedItemId();
-                        if (spinnerVal == 0) {
-                            String surviveString = ((EditText) view.findViewById(R.id.editText)).getText().toString();
-                            String createString = ((EditText) view.findViewById(R.id.editText2)).getText().toString();
-                            for (int i = 0; i != surviveString.length(); i++) {
-                                surviveList.add(Character.getNumericValue(surviveString.charAt(i)));
+                        if (gridID == 0) {
+                            long spinnerVal = ((Spinner) view.findViewById(R.id.spinner)).getSelectedItemId();
+                            if (spinnerVal == 0) {
+                                String surviveString = ((EditText) view.findViewById(R.id.editText)).getText().toString();
+                                String createString = ((EditText) view.findViewById(R.id.editText2)).getText().toString();
+                                for (int i = 0; i != surviveString.length(); i++) {
+                                    surviveList.add(Character.getNumericValue(surviveString.charAt(i)));
+                                }
+                                for (int i = 0; i != createString.length(); i++) {
+                                    createList.add(Character.getNumericValue(createString.charAt(i)));
+                                }
+                            } else if (spinnerVal == 1) {
+                                surviveList.add(2);
+                                surviveList.add(3);
+                                createList.add(3);
+                            } else if (spinnerVal == 2) {
+                                surviveList.add(1);
+                                surviveList.add(2);
+                                surviveList.add(5);
+                                createList.add(3);
+                                createList.add(6);
+                            } else if (spinnerVal == 3) {
+                                surviveList.add(1);
+                                createList.add(1);
+                            } else if (spinnerVal == 4) {
+                                createList.add(2);
+                                createList.add(3);
+                                createList.add(4);
+                            } else if (spinnerVal == 5) {
+                                surviveList.add(3);
+                                surviveList.add(4);
+                                createList.add(3);
+                                createList.add(4);
+                            } else if (spinnerVal == 6) {
+                                surviveList.add(2);
+                                surviveList.add(3);
+                                createList.add(3);
+                                createList.add(6);
+                            } else if (spinnerVal == 7) {
+                                surviveList.add(1);
+                                surviveList.add(2);
+                                surviveList.add(3);
+                                surviveList.add(4);
+                                surviveList.add(5);
+                                createList.add(3);
+                            } else if (spinnerVal == 8) {
+                                surviveList.add(2);
+                                surviveList.add(3);
+                                surviveList.add(8);
+                                createList.add(3);
+                                createList.add(5);
+                                surviveList.add(7);
+                            } else if (spinnerVal == 9) {
+                                surviveList.add(2);
+                                surviveList.add(3);
+                                surviveList.add(4);
+                                surviveList.add(5);
+                                createList.add(4);
+                                createList.add(5);
+                                createList.add(6);
+                                createList.add(7);
+                                createList.add(8);
+                            } else if (spinnerVal == 10) {
+                                surviveList.add(1);
+                                surviveList.add(2);
+                                surviveList.add(3);
+                                surviveList.add(4);
+                                createList.add(3);
+                            } else if (spinnerVal == 11) {
+                                surviveList.add(1);
+                                createList.add(1);
+                                createList.add(2);
+                                createList.add(3);
                             }
-                            for (int i = 0; i != createString.length(); i++) {
-                                createList.add(Character.getNumericValue(createString.charAt(i)));
+                            optionCallback.passUpOptions(surviveList, createList);
+                        } else {
+                            long spinnerVal = ((Spinner) view.findViewById(R.id.spinner_gene)).getSelectedItemId();
+
+                            int generations = 2;
+
+                            if (spinnerVal == 0) {
+                                String surviveString = ((EditText) view.findViewById(R.id.editText_gene)).getText().toString();
+                                String createString = ((EditText) view.findViewById(R.id.editText2_gene)).getText().toString();
+
+                                for (int i = 0; i != surviveString.length(); i++) {
+                                    surviveList.add(Character.getNumericValue(surviveString.charAt(i)));
+                                }
+                                for (int i = 0; i != createString.length(); i++) {
+                                    createList.add(Character.getNumericValue(createString.charAt(i)));
+                                }
+                                generations = Integer.valueOf(((EditText) view.findViewById(R.id.editText5_gene)).getText().toString());
+
+                            } else if (spinnerVal == 1) {
+                                createList.add(2);
+                                generations = 3;
+                            } else if (spinnerVal == 2) {
+                                surviveList.add(2);
+                                surviveList.add(3);
+                                createList.add(2);
+                                generations = 8;
+                            } else if (spinnerVal == 3) {
+                                surviveList.add(3);
+                                surviveList.add(4);
+                                surviveList.add(5);
+                                createList.add(2);
+                                generations = 4;
+                            } else if (spinnerVal == 4) {
+                                surviveList.add(3);
+                                surviveList.add(4);
+                                surviveList.add(7);
+                                createList.add(3);
+                                createList.add(2);
+                                generations = 8;
+                            } else if (spinnerVal == 5) {
+                                surviveList.add(0);
+                                surviveList.add(1);
+                                surviveList.add(2);
+                                surviveList.add(3);
+                                surviveList.add(4);
+                                surviveList.add(5);
+                                createList.add(4);
+                                createList.add(5);
+                                createList.add(8);
+                                generations = 3;
+                            } else if (spinnerVal == 6) {
+                                surviveList.add(2);
+                                createList.add(2);
+                                createList.add(3);
+                                generations = 8;
+                            } else if (spinnerVal == 7) {
+                                surviveList.add(3);
+                                surviveList.add(4);
+                                surviveList.add(6);
+                                surviveList.add(7);
+                                createList.add(2);
+                                createList.add(6);
+                                createList.add(7);
+                                createList.add(8);
+                                generations = 6;
+                            } else if (spinnerVal == 8) {
+                                surviveList.add(0);
+                                surviveList.add(3);
+                                surviveList.add(4);
+                                surviveList.add(6);
+                                surviveList.add(7);
+                                createList.add(2);
+                                createList.add(5);
+                                generations = 6;
+                            } else if (spinnerVal == 9) {
+                                surviveList.add(2);
+                                createList.add(2);
+                                createList.add(3);
+                                createList.add(4);
+                                generations = 5;
+                            } else if (spinnerVal == 10) {
+                                surviveList.add(3);
+                                surviveList.add(4);
+                                surviveList.add(5);
+                                surviveList.add(6);
+                                createList.add(2);
+                                generations = 6;
+                            } else if (spinnerVal == 11) {
+                                surviveList.add(1);
+                                surviveList.add(4);
+                                surviveList.add(5);
+                                surviveList.add(6);
+                                createList.add(5);
+                                createList.add(2);
+                                createList.add(3);
+                                createList.add(6);
+                                generations = 13;
                             }
-                        } else if (spinnerVal == 1) {
-                            surviveList.add(2);
-                            surviveList.add(3);
-                            createList.add(3);
-                        } else if (spinnerVal == 2) {
-                            surviveList.add(1);
-                            surviveList.add(2);
-                            surviveList.add(5);
-                            createList.add(3);
-                            createList.add(6);
-                        } else if (spinnerVal == 3) {
-                            surviveList.add(1);
-                            createList.add(1);
-                        } else if (spinnerVal == 4) {
-                            createList.add(2);
-                            createList.add(3);
-                            createList.add(4);
-                        } else if (spinnerVal == 5) {
-                            surviveList.add(3);
-                            surviveList.add(4);
-                            createList.add(3);
-                            createList.add(4);
-                        } else if (spinnerVal == 6) {
-                            surviveList.add(2);
-                            surviveList.add(3);
-                            createList.add(3);
-                            createList.add(6);
-                        } else if (spinnerVal == 7) {
-                            surviveList.add(1);
-                            surviveList.add(2);
-                            surviveList.add(3);
-                            surviveList.add(4);
-                            surviveList.add(5);
-                            createList.add(3);
-                        } else if (spinnerVal == 8) {
-                            surviveList.add(2);
-                            surviveList.add(3);
-                            surviveList.add(8);
-                            createList.add(3);
-                            createList.add(5);
-                            surviveList.add(7);
-                        } else if (spinnerVal == 9) {
-                            surviveList.add(2);
-                            surviveList.add(3);
-                            surviveList.add(4);
-                            surviveList.add(5);
-                            createList.add(4);
-                            createList.add(5);
-                            createList.add(6);
-                            createList.add(7);
-                            createList.add(8);
-                        } else if (spinnerVal == 10) {
-                            surviveList.add(1);
-                            surviveList.add(2);
-                            surviveList.add(3);
-                            surviveList.add(4);
-                            createList.add(3);
-                        } else if (spinnerVal == 11) {
-                            surviveList.add(1);
-                            createList.add(1);
-                            createList.add(2);
-                            createList.add(3);
+                            optionCallback.passUpOptions(surviveList, createList, generations);
                         }
-                        optionCallback.passUpOptions(surviveList, createList);
                     }
                 });
 
@@ -149,5 +256,6 @@ public class GridOptionDialogFragment extends DialogFragment {
 
     public interface GridOptionCallback {
         void passUpOptions(HashSet<Integer> surviveList, HashSet<Integer> createList);
+        void passUpOptions(HashSet<Integer> surviveList, HashSet<Integer> createList, int generations);
     }
 }
